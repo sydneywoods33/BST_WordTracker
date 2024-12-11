@@ -3,7 +3,6 @@ package implementations;
 import utilities.BSTreeADT;
 import utilities.Iterator;
 
-import java.util.Collection;
 import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.Set;
@@ -340,7 +339,7 @@ public class BSTree<E extends Comparable<E>> implements BSTreeADT<E>
 			inorderRec(root.getLeft(), printOption);
 			// get root
 			Map<String, Set<Integer>> Data = root.getFileData();
-			Collection<Set<Integer>> Lines;
+
 			switch (printOption)
 			{
 			case "f":
@@ -371,8 +370,12 @@ public class BSTree<E extends Comparable<E>> implements BSTreeADT<E>
 				System.out.print("\n");
 				break;
 			case "o":
+				Integer entries = 0;
+				for (Set<Integer> value : Data.values()) {
+					entries += value.size();
+				};
 				// Alphabetical order, file names, line numbers, frequency
-				System.out.print("== " + root.getValue() + " ==" + " number of entries: " + Data.values().size());
+				System.out.print("== " + root.getValue() + " ==" + " number of entries: " + entries);
 				// get each file name
 				for (String file : Data.keySet())
 				{
