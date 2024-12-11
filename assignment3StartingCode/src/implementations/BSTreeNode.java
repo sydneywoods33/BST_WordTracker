@@ -23,7 +23,8 @@ public class BSTreeNode<E> implements Serializable {
         this.fileData = new HashMap<>();
     }
 
-    public E getValue() {
+    // named to match test
+    public E getElement() {
         return value;
     }
 

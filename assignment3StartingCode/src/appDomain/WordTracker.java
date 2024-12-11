@@ -3,6 +3,8 @@ package appDomain;
 import implementations.BSTree;
 import implementations.BSTreeNode;
 import java.io.*;
+import java.util.Map;
+import java.util.Set;
 
 public class WordTracker implements Serializable
 {
@@ -55,14 +57,8 @@ public class WordTracker implements Serializable
 
 		WordTracker tracker = new WordTracker();
 		tracker.processFile(input);
-		wordTree.inorder(order);
-		if (!output.isEmpty())
-		{
-			tracker.saveRepository(output);
-		} else
-		{
-			tracker.saveRepository();
-		}
+		tracker.inorder(order, output);
+		tracker.saveRepository();
 
 	}
 
@@ -103,7 +99,7 @@ public class WordTracker implements Serializable
 	}
 
 	// adds word to the tree, updating existing entries or adding new ones
-	private void addWordToTree(String word, String fileName, int lineNumber)
+	private void addWordToTree(String word, String filePath, int lineNumber)
 	{
 		BSTreeNode<String> node = wordTree.search(word);
 		if (node == null)
@@ -111,7 +107,117 @@ public class WordTracker implements Serializable
 			wordTree.add(word);
 			node = wordTree.search(word);
 		}
-		node.addFileData(fileName, lineNumber);
+		node.addFileData(filePath, lineNumber);
+	}
+
+	// report option
+	public void inorder(String printOption, String filePath)
+	{
+		StringBuilder printReport = new StringBuilder();
+		printReport.append(inorderRec(wordTree.getRoot(), printOption));
+		if (filePath.isEmpty())
+		{
+			System.out.println("File not exported.");
+			System.out.print(printReport);
+		} else
+		{
+			File file = new File(filePath);
+			try
+			{
+				if (!file.exists())
+				{
+
+					file.createNewFile();
+				}
+
+				FileWriter myWriter = new FileWriter(filePath);
+				myWriter.append(printReport);
+				myWriter.close();
+			} catch (IOException e)
+			{
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			System.out.println("File exported to: " + filePath);
+		}
+	}
+
+	private StringBuilder inorderRec(BSTreeNode<String> root, String printOption)
+	{
+		StringBuilder printReport = new StringBuilder();
+		if (root != null)
+		{
+			// get left
+			printReport.append(inorderRec(root.getLeft(), printOption));
+			// get root
+			Map<String, Set<Integer>> Data = root.getFileData();
+			switch (printOption)
+			{
+			case "f":
+				// Alphabetical order, file names
+				printReport.append("== " + root.getElement() + " ==");
+				// get each file name
+				for (String file : Data.keySet())
+				{
+					printReport.append(" *found in: " + file + " ");
+				}
+				printReport.append("\n");
+				break;
+
+			case "l":
+				// Alphabetical order, file names, line numbers
+				printReport.append("== " + root.getElement() + " ==");
+				// get each file name
+				for (String file : Data.keySet())
+				{
+					printReport.append(" *found in: " + file);
+					{
+						printReport.append(" on lines: ");
+						// get each line
+						for (Integer line : Data.get(file))
+						{
+							printReport.append(line + " ");
+						}
+					}
+				}
+				printReport.append("\n");
+				break;
+			case "o":
+				Integer entries = 0;
+				for (Set<Integer> value : Data.values())
+				{
+					entries += value.size();
+				}
+				;
+				// Alphabetical order, file names, line numbers, frequency
+				printReport.append("== " + root.getElement() + " ==" + " number of entries: " + entries);
+				// get each file name
+				for (String file : Data.keySet())
+				{
+					printReport.append(" *found in: " + file);
+					{
+						printReport.append(" on lines: ");
+						// get each line
+						for (Integer line : Data.get(file))
+						{
+							printReport.append(line + " ");
+						}
+					}
+				}
+
+				printReport.append("\n");
+				break;
+			default:
+				// Alphabetical
+				printReport.append(root.getElement() + "\n");
+				break;
+			}
+			// get right
+			printReport.append(inorderRec(root.getRight(), printOption));
+			
+		}
+		return printReport;
+
 	}
 
 	// loads the word tree from repo file
@@ -143,21 +249,6 @@ public class WordTracker implements Serializable
 		{
 			oos.writeObject(wordTree);
 			System.out.println("Repository saved successfully.");
-			System.out.println("File not exported.");
-		} catch (IOException e)
-		{
-			System.out.println("Error saving repository: " + e.getMessage());
-		}
-	}
-
-	// saves the word tree to another file
-	private void saveRepository(String filePath)
-	{
-		try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(filePath)))
-		{
-			oos.writeObject(wordTree);
-			System.out.println("Repository saved successfully.");
-			System.out.println("Exported to: " + filePath);
 		} catch (IOException e)
 		{
 			System.out.println("Error saving repository: " + e.getMessage());

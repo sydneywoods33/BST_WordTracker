@@ -76,11 +76,11 @@ public class BSTree<E extends Comparable<E>> implements BSTreeADT<E>
 
 	private BSTreeNode<E> searchRec(BSTreeNode<E> node, E entry)
 	{
-		if (node == null || entry.equals(node.getValue()))
+		if (node == null || entry.equals(node.getElement()))
 		{
 			return node;
 		}
-		if (entry.compareTo(node.getValue()) < 0)
+		if (entry.compareTo(node.getElement()) < 0)
 		{
 			return searchRec(node.getLeft(), entry);
 		}
@@ -115,10 +115,10 @@ public class BSTree<E extends Comparable<E>> implements BSTreeADT<E>
 		{
 			return new BSTreeNode<>(value);
 		}
-		if (value.compareTo(node.getValue()) < 0)
+		if (value.compareTo(node.getElement()) < 0)
 		{
 			node.setLeft(insertRec(node.getLeft(), value));
-		} else if (value.compareTo(node.getValue()) > 0)
+		} else if (value.compareTo(node.getElement()) > 0)
 		{
 			node.setRight(insertRec(node.getRight(), value));
 		}
@@ -223,7 +223,7 @@ public class BSTree<E extends Comparable<E>> implements BSTreeADT<E>
 					throw new NoSuchElementException();
 				}
 				BSTreeNode<E> node = stack.pop();
-				E result = node.getValue();
+				E result = node.getElement();
 				pushLeft(node.getRight());
 				return result;
 			}
@@ -255,7 +255,7 @@ public class BSTree<E extends Comparable<E>> implements BSTreeADT<E>
 					throw new NoSuchElementException();
 				}
 				BSTreeNode<E> node = stack.pop();
-				E result = node.getValue();
+				E result = node.getElement();
 				if (node.getRight() != null)
 				{
 					stack.push(node.getRight());
@@ -309,7 +309,7 @@ public class BSTree<E extends Comparable<E>> implements BSTreeADT<E>
 				{
 					throw new NoSuchElementException();
 				}
-				return stack2.pop().getValue();
+				return stack2.pop().getElement();
 			}
 		};
 	}
@@ -323,81 +323,4 @@ public class BSTree<E extends Comparable<E>> implements BSTreeADT<E>
 		}
 		return search(entry) != null;
 	}
-
-	// inorder traversal
-	public void inorder(String printOption)
-	{
-		inorderRec(root, printOption);
-		System.out.println("\n");
-	}
-
-	private void inorderRec(BSTreeNode<E> root, String printOption)
-	{
-		if (root != null)
-		{
-			// get left
-			inorderRec(root.getLeft(), printOption);
-			// get root
-			Map<String, Set<Integer>> Data = root.getFileData();
-
-			switch (printOption)
-			{
-			case "f":
-				// Alphabetical order, file names
-				System.out.print("== " + root.getValue() + " ==");
-				// get each file name
-				for (String file : Data.keySet())
-				{
-					System.out.print(" *found in: " + file + " ");
-				}
-				System.out.print("\n");
-				break;
-
-			case "l":
-				// Alphabetical order, file names, line numbers
-				System.out.print("== " + root.getValue() + " ==");
-				// get each file name
-				for (String file : Data.keySet())
-				{
-					System.out.print(" *found in: " + file);
-					{
-						System.out.print(" on lines: ");
-						// get each line
-						for (Integer line : Data.get(file)) {
-						System.out.print(line + " ");}
-					}
-				}
-				System.out.print("\n");
-				break;
-			case "o":
-				Integer entries = 0;
-				for (Set<Integer> value : Data.values()) {
-					entries += value.size();
-				};
-				// Alphabetical order, file names, line numbers, frequency
-				System.out.print("== " + root.getValue() + " ==" + " number of entries: " + entries);
-				// get each file name
-				for (String file : Data.keySet())
-				{
-					System.out.print(" *found in: " + file);
-					{
-						System.out.print(" on lines: ");
-						// get each line
-						for (Integer line : Data.get(file)) {
-						System.out.print(line + " ");}
-					}
-				}
-
-				System.out.print("\n");
-				break;
-			default:
-				// Alphabetical
-				System.out.print(root.getValue() + "\n");
-				break;
-			}
-			// get right
-			inorderRec(root.getRight(), printOption);
-		}
-	}
-
 }
