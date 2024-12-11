@@ -38,7 +38,7 @@ public class WordTracker implements Serializable
 			System.out.println("Usage: java appDomain.WordTracker <file_path>");
 			return;
 		}
-
+		
 		// parse arguments
 		for (String arg : args)
 		{
@@ -141,7 +141,7 @@ public class WordTracker implements Serializable
 			System.out.println("File exported to: " + filePath);
 		}
 	}
-
+	// get each node for report
 	private StringBuilder inorderRec(BSTreeNode<String> root, String printOption)
 	{
 		StringBuilder printReport = new StringBuilder();
