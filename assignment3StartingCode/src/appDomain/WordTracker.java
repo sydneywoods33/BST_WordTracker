@@ -9,7 +9,7 @@ import java.util.Set;
 public class WordTracker implements Serializable
 {
 	private static final long serialVersionUID = 1L;
-	private static final String REPOSITORY_FILE = "res/repository.ser";
+	private static final String REPOSITORY_FILE = "repository.ser";
 	private static BSTree<String> wordTree;
 
 	// constructs a wordtracker object, loads repository or creates a new tree
