@@ -8,18 +8,32 @@ import java.util.NoSuchElementException;
 import java.util.Set;
 import java.util.Stack;
 
+/**
+ * A binary search tree implementation of the BSTreeADT interface.
+ *
+ * @param <E> the type of elements maintained by this tree
+ */
 @SuppressWarnings("serial")
 public class BSTree<E extends Comparable<E>> implements BSTreeADT<E>
 {
 	private BSTreeNode<E> root;
 	private int size;
 
+	/**
+	 * Constructs an empty binary search tree.
+	 */
 	public BSTree()
 	{
 		root = null;
 		size = 0;
 	}
 
+	/**
+	 * Returns the root of the tree.
+	 *
+	 * @return the root of the tree
+	 * @throws NullPointerException if the tree is empty
+	 */
 	@Override
 	public BSTreeNode<E> getRoot() throws NullPointerException
 	{
@@ -30,6 +44,11 @@ public class BSTree<E extends Comparable<E>> implements BSTreeADT<E>
 		return root;
 	}
 
+	/**
+	 * Returns the height of the tree.
+	 *
+	 * @return the height of the tree
+	 */
 	@Override
 	public int getHeight()
 	{
@@ -45,18 +64,31 @@ public class BSTree<E extends Comparable<E>> implements BSTreeADT<E>
 		return 1 + Math.max(calculateHeight(node.getLeft()), calculateHeight(node.getRight()));
 	}
 
+	/**
+	 * Returns the number of elements in the tree.
+	 *
+	 * @return the number of elements in the tree
+	 */
 	@Override
 	public int size()
 	{
 		return size;
 	}
 
+	/**
+	 * Returns true if the tree contains no elements.
+	 *
+	 * @return true if the tree contains no elements
+	 */
 	@Override
 	public boolean isEmpty()
 	{
 		return size == 0;
 	}
 
+	/**
+	 * Removes all of the elements from the tree.
+	 */
 	@Override
 	public void clear()
 	{
@@ -64,6 +96,13 @@ public class BSTree<E extends Comparable<E>> implements BSTreeADT<E>
 		size = 0;
 	}
 
+	/**
+	 * Searches for the specified element in the tree.
+	 *
+	 * @param entry the element to search for
+	 * @return the node containing the element, or null if not found
+	 * @throws NullPointerException if the specified element is null
+	 */
 	@Override
 	public BSTreeNode<E> search(E entry) throws NullPointerException
 	{
@@ -87,6 +126,13 @@ public class BSTree<E extends Comparable<E>> implements BSTreeADT<E>
 		return searchRec(node.getRight(), entry);
 	}
 
+	/**
+	 * Adds the specified element to the tree.
+	 *
+	 * @param newEntry the element to add
+	 * @return true if the element was added, false if it was already present
+	 * @throws NullPointerException if the specified element is null
+	 */
 	@Override
 	public boolean add(E newEntry) throws NullPointerException
 	{
@@ -125,6 +171,11 @@ public class BSTree<E extends Comparable<E>> implements BSTreeADT<E>
 		return node;
 	}
 
+	/**
+	 * Removes and returns the smallest element in the tree.
+	 *
+	 * @return the node containing the smallest element, or null if the tree is empty
+	 */
 	@Override
 	public BSTreeNode<E> removeMin()
 	{
@@ -157,6 +208,11 @@ public class BSTree<E extends Comparable<E>> implements BSTreeADT<E>
 		return node;
 	}
 
+	/**
+	 * Removes and returns the largest element in the tree.
+	 *
+	 * @return the node containing the largest element, or null if the tree is empty
+	 */
 	@Override
 	public BSTreeNode<E> removeMax()
 	{
@@ -189,6 +245,11 @@ public class BSTree<E extends Comparable<E>> implements BSTreeADT<E>
 		return node;
 	}
 
+	/**
+	 * Returns an iterator over the elements in the tree in inorder sequence.
+	 *
+	 * @return an iterator over the elements in the tree in inorder sequence
+	 */
 	@Override
 	public Iterator<E> inorderIterator()
 	{
@@ -230,6 +291,11 @@ public class BSTree<E extends Comparable<E>> implements BSTreeADT<E>
 		};
 	}
 
+	/**
+	 * Returns an iterator over the elements in the tree in preorder sequence.
+	 *
+	 * @return an iterator over the elements in the tree in preorder sequence
+	 */
 	@Override
 	public Iterator<E> preorderIterator()
 	{
@@ -269,6 +335,11 @@ public class BSTree<E extends Comparable<E>> implements BSTreeADT<E>
 		};
 	}
 
+	/**
+	 * Returns an iterator over the elements in the tree in postorder sequence.
+	 *
+	 * @return an iterator over the elements in the tree in postorder sequence
+	 */
 	@Override
 	public Iterator<E> postorderIterator()
 	{
@@ -314,6 +385,13 @@ public class BSTree<E extends Comparable<E>> implements BSTreeADT<E>
 		};
 	}
 
+	/**
+	 * Returns true if the tree contains the specified element.
+	 *
+	 * @param entry the element to search for
+	 * @return true if the tree contains the specified element
+	 * @throws NullPointerException if the specified element is null
+	 */
 	@Override
 	public boolean contains(E entry) throws NullPointerException
 	{
